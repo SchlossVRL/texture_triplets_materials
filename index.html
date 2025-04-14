@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Triplet Embeddings: Textures</title>
+    <script src="https://unpkg.com/jspsych@7.3.4"></script>
+    <link href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-image-button-response@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-audio-button-response@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-audio-keyboard-response@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-multi-select@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-call-function@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
+
+    <style>
+    </style>
+</head>
+
+<body>
+</body>
+<script>
+
+    //init jsPsych and set up
+    var jsPsych = initJsPsych({
+        show_progress_bar: false,
+        on_data_update: function () {
+            jsPsych.data.addProperties({ worker_id: urlvar.workerId });
+            timeline.push(save_data);
+        },
+        on_finish: function () {
+            jsPsych.data.addProperties({ worker_id: urlvar.workerId });
+            //jsPsych.data.get().localSave("csv", filename);
+            timeline.push(save_data);
+        },
+        max_load_time: 120000,
+    });
+
+    // Create timeline variable //
+    var timeline = [];
+
+
+    // Set background color to gray //
+    document.body.style.backgroundColor = "rgb(128,128,128)"
+
+    //random IDs for file names
+    const subject_id = jsPsych.randomization.randomID(10);
+    const filename = `${subject_id}.csv`;
+
+    //Participant ID for experimenter to fill
+    var participant_id = {
+        type: jsPsychSurveyText,
+        questions: [
+            { prompt: "ID Number", name: 'ID', rows: "1", columns: "3", required: true, }]
+    };
+
+    timeline.push(participant_id);
+
+
+    var urlvar = jsPsych.data.urlVariables();
+
+    //actual data collection ID: WCzRnVgRZjrT
+    //pilot data collection ID: 0fLBYDNF84OP
+
+    const save_data = {
+        type: jsPsychPipe,
+        action: "save",
+        experiment_id: "0fLBYDNF84OP",
+        filename: filename,
+        wait_message: 'Please wait a moment while the next page loads.',
+        data_string: () => jsPsych.data.get().csv(),
+        on_finish: (data) => {
+            console.log("Data saved:", data);
+        }
+    };
+
+    var preload = {
+        type: jsPsychPreload,
+        //auto_preload: true,
+        show_progress_bar: true,
+        message: "Loading experiment files...",
+        error_message:
+            "Oops! There's a problem loading files. Please refresh the page to try again.",
+    };
+    timeline.push(preload);
+
+    var stimuli_texture = [
+        { texture: "P53" }, { texture: "P102" }, { texture: "P24" }, { texture: "P51" }, { texture: "P35" }, { texture: "P0" }, { texture: "P75" }, { texture: "P22" }, { texture: "P112" },
+        { texture: "G53" }, { texture: "G102" }, { texture: "G24" }, { texture: "G51" }, { texture: "G35" }, { texture: "G0" }, { texture: "G75" }, { texture: "G22" }, { texture: "G112" },
+        { texture: "E53" }, { texture: "E102" }, { texture: "E24" }, { texture: "E51" }, { texture: "E35" }, { texture: "E0" }, { texture: "E75" }, { texture: "E22" }, { texture: "E112" },
+        { texture: "S53" }, { texture: "S102" }, { texture: "S24" }, { texture: "S51" }, { texture: "S35" }, { texture: "S0" }, { texture: "S75" }, { texture: "S22" }, { texture: "S112" },
+        { texture: "F53" }, { texture: "F102" }, { texture: "F24" }, { texture: "F51" }, { texture: "F35" }, { texture: "F0" }, { texture: "F75" }, { texture: "F22" }, { texture: "F112" },
+        { texture: "M53" }, { texture: "M102" }, { texture: "M24" }, { texture: "M51" }, { texture: "M35" }, { texture: "M0" }, { texture: "M75" }, { texture: "M22" }, { texture: "M112" },
+    ];
+
+
+    const texture_arr = [
+        "P53", "P102", "P24", "P51", "P35", "P0", "P75", "P22", "P112",
+        "G53", "G102", "G24", "G51", "G35", "G0", "G75", "G22", "G112",
+        "E53", "E102", "E24", "E51", "E35", "E0", "E75", "E22", "E112",
+        "S53", "S102", "S24", "S51", "S35", "S0", "S75", "S22", "S112",
+        "F53", "F102", "F24", "F51", "F35", "F0", "F75", "F22", "F112",
+        "M53", "M102", "M24", "M51", "M35", "M0", "M75", "M22", "M112",
+    ];
+
+    //plan:
+    //1) make a pool of random triplets
+    //2) sample
+
+    var validation_textures = [
+        {
+            head: "M102",
+            choice_1: "E75",
+            choice_2: "M0",
+            type: "validation"
+        },
+        {
+            head: "E102",
+            choice_1: "M24",
+            choice_2: "P24",
+            type: "validation"
+        },
+        {
+            head: "S0",
+            choice_1: "P75",
+            choice_2: "E35",
+            type: "validation"
+        },
+        {
+            head: "G51",
+            choice_1: "G0",
+            choice_2: "E0",
+            type: "validation"
+        },
+        {
+            head: "F53",
+            choice_1: "M53",
+            choice_2: "P0",
+            type: "validation"
+        },
+        {
+            head: "G102",
+            choice_1: "E112",
+            choice_2: "M112",
+            type: "validation"
+        },
+        {
+            head: "P22",
+            choice_1: "E51",
+            choice_2: "P51",
+            type: "validation"
+        },
+        {
+            head: "F0",
+            choice_1: "P102",
+            choice_2: "S53",
+            type: "validation"
+        },
+        {
+            head: "G53",
+            choice_1: "G22",
+            choice_2: "M75",
+            type: "validation"
+        },
+        {
+            head: "S51",
+            choice_1: "F112",
+            choice_2: "P35",
+            type: "validation"
+        },
+        {
+            head: "M22",
+            choice_1: "F24",
+            choice_2: "F51",
+            type: "validation"
+        },
+        {
+            head: "E22",
+            choice_1: "M51",
+            choice_2: "G24",
+            type: "validation"
+        },
+        {
+            head: "S24",
+            choice_1: "E24",
+            choice_2: "S75",
+            type: "validation"
+        },
+        {
+            head: "F75",
+            choice_1: "S35",
+            choice_2: "F22",
+            type: "validation"
+        },
+        {
+            head: "F35",
+            choice_1: "S112",
+            choice_2: "S102",
+            type: "validation"
+        },
+        {
+            head: "M35",
+            choice_1: "F102",
+            choice_2: "E53",
+            type: "validation"
+        },
+        {
+            head: "G35",
+            choice_1: "P112",
+            choice_2: "P53",
+            type: "validation"
+        },
+        {
+            head: "G112",
+            choice_1: "S22",
+            choice_2: "G75",
+            type: "validation"
+        }
+    ]
+
+
+    //to shuffle the array of choices at the beginning of the experiment
+    function shuffle(array) {
+        let currentIndex = array.length,
+            randomIndex;
+        // While there remain elements to shuffle.
+        while (currentIndex != 0) {
+            // Pick a remaining element.
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex],
+                array[currentIndex],
+            ];
+        }
+        console.log("Shuffled array:", array);
+        return array;
+    }
+
+    var test_stimuli = [];
+
+    // to get a random item from the array
+    function getRandomItems(arr) {
+        var temp_array = jsPsych.randomization.sampleWithoutReplacement(arr, 2);
+        arr = arr.filter((e) => e !== temp_array[0]);
+        arr = arr.filter((e) => e !== temp_array[1]);
+        return temp_array;
+    }
+
+
+    // Pop-up box if people try to leave the page (including refreshing) 
+    window.onbeforeunload = function () {
+        return "If you leave or refresh the page, you will not be able to finish the experiment.";
+    };
+
+
+    //Enter fullscreen mode- asks participants to press "continue" button to enter full screen
+    // Once participants enter fullscreen mode, their ID is recorded
+    timeline.push({
+        type: jsPsychFullscreen,
+        fullscreen_mode: true, //change to true to turn on & false to turn off
+    })
+
+    // Get Start time
+    var start_time = new Date();
+
+    // Record subjectID, and date info
+    jsPsych.data.addProperties({ subjectID: subject_id, dateInfo: start_time });
+
+
+    // "Fake trial" for checking if experiment loaded correctly
+    var loadCheck = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: "",
+        choices: "NO_KEYS",
+        trial_duration: 10
+    }
+    timeline.push(loadCheck);
+
+
+    // // Save the fake trial data to the server (this is done as a way to check that if there is not a full dataset for a registered ID, that the experiment loaded properly and the participant dropped out)
+    // timeline.push({
+    //   type: jsPsychCallFunction,
+    //   func: function () { saveData(jsPsych.data.get()) }
+    // });
+
+    // Inter trial interval //
+
+    // Overview instructions of experiment /// UPDATE + TotalTasks +, + numTasks +, + expTime +, + totalTasks +
+    //var totalTasks = numTasks + 1;
+
+    var overview_instructions = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: 'Welcome! <p> This experiment involves 1 experimental task.',
+        choices: ['Continue']
+    }
+    timeline.push(overview_instructions);
+
+
+    var lasttrialdata_rt = 0;
+
+    //Practice trials
+
+    //var arr_pair = [];
+
+    // Function to generate the trial textures
+    function generateTrialTextures() {
+        var trial_textures = [];
+        //var texture_arr_copy = [...texture_arr]; // Make a copy to avoid modifying the original texture array
+
+        // Loop to fill each trial texture item
+        for (let i = 0; i < 80; i++) {
+            var texture_arr_copy = [...texture_arr];
+            // Select the current "head" texture
+            let headIndex = Math.floor(Math.random() * texture_arr_copy.length);
+            let head = texture_arr_copy.splice(headIndex, 1)[0]; // Remove the chosen head texture
+
+            // Select two distinct "choices" textures
+            let choice1, choice2;
+            do {
+                choice1 = texture_arr_copy[Math.floor(Math.random() * texture_arr_copy.length)];
+            } while (choice1 === head); // Ensure choice1 is not the same as the head texture
+
+            do {
+                choice2 = texture_arr_copy[Math.floor(Math.random() * texture_arr_copy.length)];
+            } while (choice2 === head || choice2 === choice1); // Ensure choice2 is distinct from both head and choice1
+
+            // Push the object with the selected head and choices to validation_textures
+            trial_textures.push({
+                head: head,
+                choice_1: choice1,
+                choice_2: choice2,
+                type: "trial"
+            });
+        }
+
+        return trial_textures;
+    }
+
+    // Generate the trial textures
+    var trial_textures1 = generateTrialTextures();
+    console.log(trial_textures1);
+
+    // okay so this is to get a random set of elements...
+    function getRandom(arr, n) {
+        var result = new Array(n),
+            len = arr.length,
+            taken = new Array(len);
+        if (n > len)
+            throw new RangeError("getRandom: more elements taken than available");
+        while (n--) {
+            var x = Math.floor(Math.random() * len);
+            result[n] = arr[x in taken ? taken[x] : x];
+            taken[x] = --len in taken ? taken[len] : len;
+        }
+        return result;
+    }
+
+    //actually grabbing them
+    var selected_validation_textures = getRandom(validation_textures, 4); //
+    var validation_shuffled_doubled = jsPsych.randomization.repeat(
+        selected_validation_textures,
+        2
+    );
+
+    // Combine the trial_textures array with validation_shuffled_doubled
+    trial_textures = trial_textures1.concat(validation_shuffled_doubled);
+
+    // Shuffle the combined trial_textures array
+    trial_textures = jsPsych.randomization.shuffle(trial_textures);
+
+    // Log the final shuffled trial_textures array
+    console.log(trial_textures);
+
+    var textureTrialIndex = 0;
+
+    // define the trials!
+    var trial_texture = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: function () {
+            // Get the current trial index (adjusting for display in multiples of 3)
+            //let currentTrialIndex = Math.floor(jsPsych.data.get().count() / 2);
+
+            // Get the current texture object (stimulus) from trial_textures
+            let currentTexture = trial_textures[textureTrialIndex];
+
+            // Get the next three trials (upcoming stimuli)
+            let upcomingHTML = '';
+            let upcomingTrials = [];
+
+            // Loop through the next 1 trials
+            for (let i = 1; i <= 1; i++) {
+                let upcomingIndex = textureTrialIndex + i;
+                if (upcomingIndex < trial_textures.length) {
+                    // Get the upcoming stimulus (head and choices)
+                    let upcomingStimulus = trial_textures[upcomingIndex];
+
+                    // Add the upcoming stimulus and choices to the upcomingTrials array
+                    upcomingTrials.push({
+                        head: upcomingStimulus.head,
+                        choice_1: upcomingStimulus.choice_1,
+                        choice_2: upcomingStimulus.choice_2
+                    });
+                } else {
+                    upcomingTrials.push({ head: 'Not available', choice_1: '', choice_2: '' });
+                }
+            }
+
+            // Generate the HTML for the current trial
+            let currentHTML = `
+            <div style="border: 10px solid black; padding: 20px; width: 600px; position: absolute; top: 20%; left: 37%;">
+             <p style="font-size: 40px; margin: 0 0 40px 0;"><strong>Top:</strong> ${currentTexture.head}</p>
+             <div style="display: flex; justify-content: space-between; font-size: 40px;">
+            <p style="margin: 0;"><strong>Left:</strong> ${currentTexture.choice_1}</p>
+            <p style="margin: 0;"><strong>Right:</strong> ${currentTexture.choice_2}</p>
+        </div>
+            </div>
+            `;
+
+            // Now create the HTML for the upcoming trials
+            upcomingTrials.forEach((trial, index) => {
+                upcomingHTML += `
+                <p style="position: absolute; top: 65%; left: 47%; font-size: 25px;"><strong>Top:</strong> ${trial.head}</p>
+                <p style="position: absolute; top: 70%; left: 40%; font-size: 25px;"><strong>Left:</strong> ${trial.choice_1}</p>
+                <p style="position: absolute; top: 70%; left: 54%; font-size: 25px;"><strong>Right:</strong> ${trial.choice_2}</p>
+            `;
+            });
+
+            // Display the current trial index in the upper right corner
+            let trialIndexHTML = `
+            <p style="position: absolute; top: 100px; left: 20%; font-size: 16px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 5px;">
+            Trial ${textureTrialIndex + 1} of ${trial_textures.length}
+            </p>
+        `;
+
+            // Combine the current trial HTML with the upcoming trials for the final stimulus
+            let finalHTML = trialIndexHTML + currentHTML + `
+            <div style="font-size: 16px; margin-top: 100 px;">
+                <p style="position: absolute; top: 60%; left: 47%;"><strong>Upcoming Trials:</strong></p>
+                ${upcomingHTML}
+            </div>
+        `;
+
+            return finalHTML; // Return the combined HTML as a single string
+        },
+        choices: ["Left", "Right"],
+        button_html: '<button class="jspsych-btn" style="font-size: 30px; padding: 20px 40px; width: 200px;">%choice%</button>',
+        on_finish: function (data) {
+            // Access the response directly from the plugin's data
+            let response = data.response;
+
+            // Store the choices for this trial
+            //let currentTrialIndex = Math.floor(jsPsych.data.get().count() / 3);
+            let currentTexture = trial_textures[textureTrialIndex];
+
+            data.choice_1 = currentTexture.choice_1;
+            data.choice_2 = currentTexture.choice_2;
+            data.head = currentTexture.head;
+            data.type = currentTexture.type;
+
+            textureTrialIndex++;
+        }
+    };
+
+
+
+    var trial_procedure_textures = {
+        timeline: [trial_texture],
+        timeline_variables: stimuli_texture,
+        randomize_order: true,
+        sample: {
+            type: "with-replacement",
+            size: 22,
+        },
+    };
+
+
+    var quick_break1 = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus:
+            "You have completed 25% of the experiment trials. Please let the participant know, then click 'Continue' when you are ready proceed to the next round.",
+        choices: ["Continue"],
+    };
+
+    var quick_break2 = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus:
+            "You have completed 50% of the experiment trials. Please let the participant know, then click 'Continue' when you are ready proceed to the next round.",
+        choices: ["Continue"],
+    };
+
+    var quick_break3 = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus:
+            "You have completed 75% of the experiment trials. Please let the participant know, then click 'Continue' when you are ready proceed to the next round.",
+        choices: ["Continue"],
+    };
+
+    var texture_procedure = {
+        timeline: [
+            trial_procedure_textures
+        ],
+        randomize_order: true,
+        repetitions: 1
+    };
+
+    //timeline.push(practice_procedure_textures);
+
+    timeline.push(texture_procedure);
+    timeline.push(quick_break1);
+    timeline.push(texture_procedure);
+    timeline.push(quick_break2);
+    timeline.push(texture_procedure);
+    timeline.push(quick_break3);
+    timeline.push(texture_procedure);
+
+    // total number of trials per participant = (a(5)(4)) + (b(5)(4)) + (c(5)(4))
+    // First value = number of repetitions
+    // Second value = number of blocks
+    // a = number of validation images selected
+    // b = number of trial images selected
+    // c = number of check images selected
+    // a  = 1/5b
+    // for 200 trials -> a = 2, b = 7, c = 1 
+
+
+    timeline.push(save_data);
+
+    var goodbye = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus:
+            `<p>You have finished the experiment.</p>
+    <p>Please click the button below to complete the experiment and inform the experimenter. Thank you!</p>`,
+        choices: ['Continue']
+    };
+    timeline.push(goodbye);
+
+    /* ---------------------------------- End of main experiment ---------------------------------------- */
+
+    //Exit fullscreen
+    timeline.push({
+        type: jsPsychFullscreen,
+        fullscreen_mode: false
+    })
+
+    //Assign index values to the trials once they are all in the timeline
+    timeline.forEach(function (trial, index) {
+        trial.index = index;  // Assign an index to each trial
+    });
+
+    // Run the experiment with the wrapped timeline
+    jsPsych.run(timeline);
+
+</script>
+
+</html>
