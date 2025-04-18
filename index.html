@@ -94,7 +94,6 @@
     var stimuli_texture = [
         { texture: "P53" }, { texture: "P102" }, { texture: "P24" }, { texture: "P51" }, { texture: "P0" }, { texture: "P75" }, { texture: "P22" },
         { texture: "G53" }, { texture: "G102" }, { texture: "G24" }, { texture: "G51" }, { texture: "G0" }, { texture: "G75" }, { texture: "G22" },
-        { texture: "E53" }, { texture: "E102" }, { texture: "E24" }, { texture: "E51" }, { texture: "E0" }, { texture: "E75" }, { texture: "E22" },
         { texture: "S53" }, { texture: "S102" }, { texture: "S24" }, { texture: "S51" }, { texture: "S0" }, { texture: "S75" }, { texture: "S22" },
         { texture: "F53" }, { texture: "F102" }, { texture: "F24" }, { texture: "F51" }, { texture: "F0" }, { texture: "F75" }, { texture: "F22" },
         { texture: "M53" }, { texture: "M102" }, { texture: "M24" }, { texture: "M51" }, { texture: "M0" }, { texture: "M75" }, { texture: "M22" },
@@ -104,7 +103,6 @@
     const texture_arr = [
         "P53", "P102", "P24", "P51", "P0", "P75", "P22",
         "G53", "G102", "G24", "G51", "G0", "G75", "G22",
-        "E53", "E102", "E24", "E51", "E0", "E75", "E22",
         "S53", "S102", "S24", "S51", "S0", "S75", "S22",
         "F53", "F102", "F24", "F51", "F0", "F75", "F22",
         "M53", "M102", "M24", "M51", "M0", "M75", "M22",
@@ -116,87 +114,69 @@
 
     var validation_textures = [
         {
-            head: "E51",
-            choice_1: "F75",
-            choice_2: "E53",
-            type: "validation"
-        },
-        {
-            head: "E102",
-            choice_1: "E75",
-            choice_2: "P53",
-            type: "validation"
-        },
-        {
-            head: "F51",
-            choice_1: "F24",
-            choice_2: "M22",
-            type: "validation"
-        },
-        {
-            head: "S22",
-            choice_1: "P75",
-            choice_2: "P51",
-            type: "validation"
-        },
-        {
-            head: "S53",
-            choice_1: "G75",
-            choice_2: "S102",
-            type: "validation"
-        },
-        {
-            head: "M75",
-            choice_1: "M24",
-            choice_2: "S51",
-            type: "validation"
-        },
-        {
-            head: "E24",
-            choice_1: "G22",
-            choice_2: "S24",
-            type: "validation"
-        },
-        {
-            head: "F53",
-            choice_1: "M102",
-            choice_2: "G0",
-            type: "validation"
-        },
-        {
             head: "G102",
-            choice_1: "G53",
-            choice_2: "M51",
-            type: "validation"
-        },
-        {
-            head: "M0",
-            choice_1: "F0",
-            choice_2: "S75",
-            type: "validation"
-        },
-        {
-            head: "F22",
-            choice_1: "G24",
-            choice_2: "E22",
-            type: "validation"
-        },
-        {
-            head: "S0",
-            choice_1: "P24",
-            choice_2: "E0",
+            choice_1: "G51",
+            choice_2: "P22",
             type: "validation"
         },
         {
             head: "F102",
-            choice_1: "G51",
+            choice_1: "M0",
+            choice_2: "M24",
+            type: "validation"
+        },
+        {
+            head: "G53",
+            choice_1: "P51",
+            choice_2: "F53",
+            type: "validation"
+        },
+        {
+            head: "F22",
+            choice_1: "G0",
+            choice_2: "F0",
+            type: "validation"
+        },
+        {
+            head: "S51",
+            choice_1: "M102",
+            choice_2: "F24",
+            type: "validation"
+        },
+        {
+            head: "P24",
+            choice_1: "S102",
+            choice_2: "P102",
+            type: "validation"
+        },
+        {
+            head: "F51",
+            choice_1: "P53",
+            choice_2: "M75",
+            type: "validation"
+        },
+        {
+            head: "G75",
+            choice_1: "S24",
+            choice_2: "G24",
+            type: "validation"
+        },
+        {
+            head: "S0",
+            choice_1: "S22",
             choice_2: "M53",
             type: "validation"
         },
         {
-            head: "P102",
-            choice_1: "P22",
-            choice_2: "P0",
+            head: "M22",
+            choice_1: "G22",
+            choice_2: "S75",
+            type: "validation"
+        },
+        {
+            head: "F75",
+            choice_1: "S53",
+            choice_2: "M51",
             type: "validation"
         }
     ]
